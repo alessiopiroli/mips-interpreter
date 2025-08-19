@@ -2,11 +2,15 @@
 
 #include <cstdint>
 
-class Instruction{
+class Instruction {
 private:
     uint32_t raw_instruction;
 
 public:
+    Instruction() = default;
+
+    explicit Instruction(uint32_t raw_instruction_);
+
     uint8_t opcode() const;
     uint8_t rs() const;
     uint8_t rt() const;

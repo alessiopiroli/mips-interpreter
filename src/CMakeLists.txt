@@ -3,6 +3,8 @@ add_library(mips-core
     mips-core/machine_state.hpp
     mips-core/instruction.cpp
     mips-core/instruction.hpp
+    mips-core/interpreter.cpp
+    mips-core/interpreter.hpp
 )
 
 target_include_directories(mips-core PUBLIC mips-core)

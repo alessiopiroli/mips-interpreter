@@ -1,5 +1,7 @@
 #include "instruction.hpp"
 
+Instruction::Instruction(uint32_t raw_instruction_) : raw_instruction{raw_instruction_} {}
+
 uint8_t Instruction::opcode() const {
     return ((raw_instruction >> 26) & (0x3F));
 }
