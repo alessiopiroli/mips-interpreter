@@ -28,17 +28,27 @@ void MachineState::print_registers() {
 }
 
 uint32_t MachineState::get_register(uint8_t index) const {
-    if ((index >= 0) && (index < 32)) {
-        return gp_registers[index];
-    } else {
-        throw std::out_of_range("Invalid register index: " + std::to_string(index));
+    if (index == 0) {
+        return 0;
     }
+
+    if (index >= gp_registers.size()) {
+        throw std::out_of_range("Register index is out of range");
+    }
+
+    return gp_registers[index];
 }
 
 void MachineState::set_register(uint8_t index, uint32_t value) {
-    if (index != 0) {
-        gp_registers[index] = value;
+    if (index == 0) {
+        return;
     }
+
+    if (index >= gp_registers.size()) {
+        throw std::out_of_range("Register idnex out of range");
+    }
+
+    gp_registers[index] = value;
 }
 
 uint32_t MachineState::read_word(uint32_t address) const {

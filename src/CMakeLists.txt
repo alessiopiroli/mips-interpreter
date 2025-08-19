@@ -10,5 +10,10 @@ add_library(mips-core
 target_include_directories(mips-core PUBLIC mips-core)
 
 add_executable(mips-interpret mips-interpret/main.cpp)
-
 target_link_libraries(mips-interpret PRIVATE mips-core)
+
+add_executable(mips-execute mips-execute/main.cpp)
+target_link_libraries(mips-execute PRIVATE mips-core)
+
+add_executable(mips-assemble mips-assemble/main.cpp)
+target_link_libraries(mips-assemble PRIVATE mips-core)

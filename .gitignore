@@ -1,2 +1,4 @@
 /build
 .vscode/
+create_bin.cpp
+print_number.bin
