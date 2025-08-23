@@ -29,7 +29,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    MachineState state(1024 * 1024);
+    MachineState state(1024 * 1024 * 4);
+
     for(size_t i = 0; i < buffer.size(); ++i) {
         state.write_byte(i, buffer[i]);
     }
@@ -46,3 +47,4 @@ int main(int argc, char* argv[]) {
     std::cout << "\nExecution finished successfully." << std::endl;
     return 0;
 }
+

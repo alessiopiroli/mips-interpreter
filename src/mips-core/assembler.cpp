@@ -624,6 +624,7 @@ std::vector<uint8_t> Assembler::run_assembly(std::istream& input) {
 
 void Assembler::process(std::istream& input, std::ostream& output, bool hex_output) {
     const auto machine_code = run_assembly(input);
+
     if (hex_output) {
         output << std::hex << std::setfill('0');
 
@@ -636,7 +637,9 @@ void Assembler::process(std::istream& input, std::ostream& output, bool hex_outp
                 output << "0x" << std::setw(8) << word << std::endl;
             }
         }
+
     } else {
+        
         if (output.good()) {
             output.write(reinterpret_cast<const char*>(machine_code.data()), machine_code.size());
         } else {
@@ -645,31 +648,6 @@ void Assembler::process(std::istream& input, std::ostream& output, bool hex_outp
     }
 }
 
-// void Assembler::assemble(std::istream& input, std::ostream& output) {
-//     // pass1(input_file);
-//     // input_file.clear();
-//     // input_file.seekg(0, std::ios::beg);
-//     // pass2(input_file);
-
-//     // if (output_file.good()) {
-//     //     output_file.write(reinterpret_cast<const char*>(binary_output.data()), binary_output.size());
-//     // } else {
-//     //     std::cerr << "Output file is not good" << std::endl;
-//     // }
-
-//     std::stringstream buffer;
-//     buffer << input.rdbuf();
-
-//     pass1(buffer);
-
-//     buffer.clear();
-//     buffer.seekg(0, std::ios::beg);
-
-//     pass2(buffer);
-
-//     if (output.good()) {
-//         output.write(reinterpret_cast<const char*>(binary_output.data()), binary_output.size());
-//     } else {
-//         std::cerr << "Output file is not good" << std::endl;
-//     }
-// }
+const std::unordered_map<std::string, uint32_t>& Assembler::get_symbol_table() const {
+    return symbol_table;
+}
