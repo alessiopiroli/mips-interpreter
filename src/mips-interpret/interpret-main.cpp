@@ -5,7 +5,7 @@
 #include <iostream>  // Required for std::cout and std::cerr
 #include <stdexcept> // Required for std::exception
 
-int main() {
+int main(int argc, char* argv[]) {
 
     const std::vector<uint32_t> program = {
         0x2404002A, // addiu $a0,$zero,42

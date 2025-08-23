@@ -2,3 +2,5 @@
 .vscode/
 create_bin.cpp
 print_number.bin
+/tests_asm
+/tests_bin

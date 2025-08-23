@@ -62,7 +62,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     // jalr TO BE IMPLEMENTED YET
     r_type_funct_map[0x09] = [this](const Instruction& inst) {
         uint32_t target_address = machine_state.get_register(inst.rs());
-        machine_state.set_register(inst.rd(), machine_state.get_pc() + 8);
+        machine_state.set_register(inst.rd(), machine_state.get_pc() + 4);
         machine_state.set_pc(target_address);
     };
 
@@ -222,7 +222,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     opcode_map[0x04] = [this](const Instruction& inst) {
         if (machine_state.get_register(inst.rs()) == machine_state.get_register(inst.rt())) {
             int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + 4 + (offset << 2));
+            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
         }
     };
 
@@ -230,7 +230,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     opcode_map[0x05] = [this](const Instruction& inst) {
         if (machine_state.get_register(inst.rs()) != machine_state.get_register(inst.rt())) {
             int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + 4 + (offset << 2));
+            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
         }
     };
 
@@ -240,7 +240,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     opcode_map[0x06] = [this](const Instruction& inst) {
         if (static_cast<int32_t>(machine_state.get_register(inst.rs())) <= 0) {
             int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + 4 + (offset << 2));
+            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
         }
     };
 
@@ -248,7 +248,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     opcode_map[0x07] = [this](const Instruction& inst) {
         if (static_cast<int32_t>(machine_state.get_register(inst.rs())) > 0) {
             int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + 4 + (offset << 2));
+            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
         }
     };
 
@@ -291,7 +291,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
         uint8_t rt = inst.rt();
         uint16_t immediate = inst.immediate();
         uint32_t val1 = machine_state.get_register(rs);
-        uint32_t result = (val1 < immediate) ? 1 : 0;
+        uint32_t result = (val1 < static_cast<uint32_t>(immediate)) ? 1 : 0;
         machine_state.set_register(rt, result);
     };
 
