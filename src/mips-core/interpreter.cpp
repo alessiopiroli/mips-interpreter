@@ -537,9 +537,18 @@ void Interpreter::execute_instruction(const Instruction& instruction) {
     }
 }
 
-void Interpreter::run() {
+void Interpreter::start() {
     running = true;
-    while (running) {
+}
+
+bool Interpreter::is_running() const {
+    return running;
+}
+
+void Interpreter::step() {
+    if (!running) {
+        return;
+    } else {
         uint32_t pc = machine_state.get_pc();
         uint32_t word;
 
@@ -547,11 +556,34 @@ void Interpreter::run() {
             word = machine_state.read_word(pc);
         } catch (const std::out_of_range&) {
             std::cerr << "PC out of bounds at 0x" << std::hex << pc << std::dec << std::endl;
-            break;
+            return;
         }
 
         Instruction inst(word);
         machine_state.set_pc(pc + 4);
         execute_instruction(inst);
+    }
+}
+
+void Interpreter::run() {
+    // running = true;
+    // while (running) {
+    //     uint32_t pc = machine_state.get_pc();
+    //     uint32_t word;
+
+    //     try {
+    //         word = machine_state.read_word(pc);
+    //     } catch (const std::out_of_range&) {
+    //         std::cerr << "PC out of bounds at 0x" << std::hex << pc << std::dec << std::endl;
+    //         break;
+    //     }
+
+    //     Instruction inst(word);
+    //     machine_state.set_pc(pc + 4);
+    //     execute_instruction(inst);
+    // }
+    start();
+    while (running) {
+        step();
     }
 }

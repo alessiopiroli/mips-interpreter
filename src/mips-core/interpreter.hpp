@@ -21,4 +21,8 @@ public:
     explicit Interpreter(MachineState& machine_state_);
     void execute_instruction(const Instruction& instruction);
     void run();
+
+    void step();
+    bool is_running() const;
+    void start();
 };

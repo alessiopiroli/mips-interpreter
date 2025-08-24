@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
             return 1;
         } else if (!output_file.is_open()) {
             std::cerr << "Could not open output file" << std::endl;
+            return 1;
         } else {
             assembler.process(input_file, output_file, false);
         }
