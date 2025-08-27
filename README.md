@@ -1,7 +1,7 @@
 ## MIPS-Interpreter
 [![Architecture](https://img.shields.io/badge/Architecture-MIPS-blue?style=flat-square)](https://en.wikipedia.org/wiki/MIPS_architecture)
-[![GUI](https://img.shields.io/badge/GUI-Qt6-brightgreen?style=flat-square)](https://github.com/qt)
 [![Language](https://img.shields.io/badge/Language-C++-orange?style=flat-square)](https://en.wikipedia.org/wiki/C%2B%2B)
+[![GUI](https://img.shields.io/badge/GUI-Qt6-brightgreen?style=flat-square)](https://github.com/qt)
 <br>
 This project implements a MIPS interpreter written in C++. It provides an assembler, an execution engine and a [Qt6](https://github.com/qt) graphical debugger. It supports a wide range of instructions and system calls, based on a custom ISA.
 
