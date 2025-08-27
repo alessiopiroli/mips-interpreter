@@ -8,6 +8,7 @@ DebuggerWindow::DebuggerWindow(const QString& assembly_file, QWidget* parent) : 
     state_group = new QGroupBox("State");
     pc_label = new QLabel("PC: 0x00000000");
     step_button = new QPushButton("Step");
+    reg_display_option = new QCheckBox("Toggle for decimal values");
 
     assembly_view = new QTextEdit();
     assembly_view->setReadOnly(true);
@@ -24,6 +25,7 @@ DebuggerWindow::DebuggerWindow(const QString& assembly_file, QWidget* parent) : 
     auto* pc_control_layout = new QHBoxLayout();
     pc_control_layout->addWidget(pc_label);
     pc_control_layout->addWidget(step_button);
+    pc_control_layout->addWidget(reg_display_option);
     pc_control_layout->addStretch();
 
     auto* register_grid_layout = new QGridLayout();
@@ -89,6 +91,7 @@ DebuggerWindow::DebuggerWindow(const QString& assembly_file, QWidget* parent) : 
     connect(step_button, &QPushButton::clicked, this, &DebuggerWindow::on_step_clicked);
     connect(command_button, &QPushButton::clicked, this, &DebuggerWindow::command_entered);
     connect(command_input, &QLineEdit::returnPressed, this, &DebuggerWindow::command_entered);
+    connect(reg_display_option, &QCheckBox::stateChanged, this, &DebuggerWindow::change_reg_display);
     
     load_and_assemble_file(assembly_file);
     update_ui();
@@ -145,7 +148,14 @@ void DebuggerWindow::update_ui() {
 
     for (int i = 0; i < 32; ++i) {
         uint32_t value = machine_state->get_register(i);
-        QString value_text = QString("0x%1").arg(value, 8, 16, QChar('0'));
+        QString value_text;
+
+        if (display_decimal) {
+            value_text = QString::number(value);
+        } else {
+            value_text = QString("0x%1").arg(value, 8, 16, QChar('0'));
+        }
+
         register_value_labels[i]->setText(value_text);
     }
 }
@@ -187,7 +197,13 @@ void DebuggerWindow::command_entered() {
                 uint8_t register_index = reg_name_index.at(register_name);
                 uint32_t register_value = machine_state->get_register(register_index);
 
-                QString output_message = QString("Value of %1 is 0x%2.").arg(register_name).arg(register_value, 8, 16, QChar('0'));
+                QString output_message;
+
+                if (display_decimal) {
+                    output_message = QString("Value of %1 is %2.").arg(register_name).arg(register_value);
+                } else {
+                    output_message = QString("Value of %1 is 0x%2.").arg(register_name).arg(register_value, 8, 16, QChar('0'));
+                }
 
                 output_console->append(output_message);
             } else {
@@ -230,4 +246,9 @@ void DebuggerWindow::command_entered() {
     } else {
         output_console->append("Error: " + command + " is an unknown command");
     }
+}
+
+void DebuggerWindow::change_reg_display(int current_state) {
+    display_decimal = (current_state == Qt::Checked);
+    update_ui();
 }

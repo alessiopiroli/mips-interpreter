@@ -17,6 +17,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <fstream>
+#include <QCheckBox>
 
 class DebuggerWindow : public QWidget {
     Q_OBJECT
@@ -24,6 +25,7 @@ class DebuggerWindow : public QWidget {
 private slots:
     void on_step_clicked();
     void command_entered();
+    void change_reg_display(int current_state);
 
 private:
     QPushButton* step_button;
@@ -50,6 +52,9 @@ private:
     QTextEdit* assembly_view;
 
     void load_and_assemble_file(const QString& filepath);
+
+    QCheckBox* reg_display_option;
+    bool display_decimal = false;
 
 public:
     explicit DebuggerWindow(const QString& assembly_file, QWidget* parent = nullptr);
