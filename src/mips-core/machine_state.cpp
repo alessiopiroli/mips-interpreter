@@ -53,7 +53,7 @@ void MachineState::set_register(uint8_t index, uint32_t value) {
 
 uint32_t MachineState::read_word(uint32_t address) const {
     // bound check
-    if (address + 4 > memory.size()) {
+    if (address > memory.size() - 4) {
         throw std::out_of_range("Memory read out of bounds");
     }
 
@@ -64,7 +64,7 @@ uint32_t MachineState::read_word(uint32_t address) const {
 
 uint32_t MachineState::read_half_word_signed(uint32_t address) const {
     // bound check
-    if (address + 2 > memory.size()) {
+    if (address > memory.size() - 2) {
         throw std::out_of_range("Memory read out of bounds");
     }
 
@@ -75,7 +75,7 @@ uint32_t MachineState::read_half_word_signed(uint32_t address) const {
 
 uint32_t MachineState::read_half_word_unsigned(uint32_t address) const {
     // bound check
-    if (address + 2 > memory.size()) {
+    if (address > memory.size() - 2) {
         throw std::out_of_range("Memory read out of bounds");
     }
 
@@ -86,7 +86,7 @@ uint32_t MachineState::read_half_word_unsigned(uint32_t address) const {
 
 uint32_t MachineState::read_byte_signed(uint32_t address) const {
     // bound check
-    if (address + 1 > memory.size()) {
+    if (address >= memory.size()) {
         throw std::out_of_range("Memory read out of bounds");
     }
 
@@ -97,7 +97,7 @@ uint32_t MachineState::read_byte_signed(uint32_t address) const {
 
 uint32_t MachineState::read_byte_unsigned(uint32_t address) const {
     // bound check
-    if (address + 1 > memory.size()) {
+    if (address >= memory.size()) {
         throw std::out_of_range("Memory read out of bounds");
     }
 
@@ -108,7 +108,7 @@ uint32_t MachineState::read_byte_unsigned(uint32_t address) const {
 
 void MachineState::write_word(uint32_t address, uint32_t value) {
     // bound check
-    if (address + 4 > memory.size()) {
+    if (address > memory.size() - 4) {
         throw std::out_of_range("Memory write out of bounds");
     }
 
@@ -117,7 +117,7 @@ void MachineState::write_word(uint32_t address, uint32_t value) {
 
 void MachineState::write_half_word(uint32_t address, uint16_t value) {
     // bound check
-    if (address + 2 > memory.size()) {
+    if (address > memory.size() - 2) {
         throw std::out_of_range("Memory write out of bounds");
     }
 
@@ -126,7 +126,7 @@ void MachineState::write_half_word(uint32_t address, uint16_t value) {
 
 void MachineState::write_byte(uint32_t address, uint8_t value) {
     // bound check
-    if (address + 1 > memory.size()) {
+    if (address >= memory.size()) {
         throw std::out_of_range("Memory write out of bounds");
     }
 

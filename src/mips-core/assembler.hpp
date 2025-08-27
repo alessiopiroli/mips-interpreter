@@ -31,6 +31,7 @@ class Assembler {
 private:
     std::unordered_map<std::string, uint32_t> symbol_table;
     std::unordered_map<std::string, uint8_t> register_map;
+    std::unordered_map<std::string, uint8_t> syscall_map;
     std::unordered_map<std::string, InstructionInfo> instruction_table;
     std::vector<uint8_t> binary_output;
 

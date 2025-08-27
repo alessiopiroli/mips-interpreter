@@ -30,7 +30,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
     // sllv rd, rt, rs
     r_type_funct_map[0x04] = [this](const Instruction& inst) {
-        int32_t value_to_shift = static_cast<int32_t>(machine_state.get_register(inst.rt()));
+        int32_t value_to_shift = (machine_state.get_register(inst.rt()));
         uint32_t shift_amount = machine_state.get_register(inst.rs()) & 0x1F;
         int32_t result = value_to_shift << shift_amount;
         machine_state.set_register(inst.rd(), static_cast<uint32_t>(result));
@@ -56,14 +56,23 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
     // jr rs
     r_type_funct_map[0x08] = [this](const Instruction& inst) {
-        machine_state.set_pc(machine_state.get_register(inst.rs()));
+        uint32_t target_address = machine_state.get_register(inst.rs());
+        if ((target_address % 4) != 0) {
+            throw std::runtime_error("Error: jr jump to unaligned address");
+        } else {
+            machine_state.set_pc(target_address);
+        }
     };
 
-    // jalr TO BE IMPLEMENTED YET
+    // jalr
     r_type_funct_map[0x09] = [this](const Instruction& inst) {
         uint32_t target_address = machine_state.get_register(inst.rs());
-        machine_state.set_register(inst.rd(), machine_state.get_pc() + 4);
-        machine_state.set_pc(target_address);
+        if ((target_address % 4) != 0) {
+            throw std::runtime_error("Error: jalr jump to unaligned address");
+        } else {
+            machine_state.set_register(31, machine_state.get_pc());
+            machine_state.set_pc(target_address);
+        }
     };
 
     // MOVE FROM
@@ -92,22 +101,24 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
     // DIV_MULT
 
-    // mult rs, rt TO FIX
+    // mult
     r_type_funct_map[0x18] = [this](const Instruction& inst) {
-        int64_t val1 = static_cast<int32_t>(machine_state.get_register(inst.rs()));
-        int64_t val2 = static_cast<int32_t>(machine_state.get_register(inst.rt()));
-        int64_t result = val1 * val2;
-        machine_state.set_lo(static_cast<uint32_t>(result & 0xFFFFFFFF));
-        machine_state.set_hi(static_cast<uint32_t>(result >> 32) & 0xFFFFFFFF);
+        int64_t first_value = static_cast<int64_t>(static_cast<int32_t>(machine_state.get_register(inst.rs())));
+        int64_t second_value = static_cast<int64_t>(static_cast<int32_t>(machine_state.get_register(inst.rt())));
+        int64_t signed_result = first_value * second_value;
+
+        uint64_t unsigned_result = static_cast<uint64_t>(signed_result);
+        machine_state.set_lo(static_cast<uint32_t>(unsigned_result & 0xFFFFFFFFu));
+        machine_state.set_hi(static_cast<uint32_t>(unsigned_result >> 32));
     };
 
     // multu rs, rt
-    r_type_funct_map[0x19] = [this](const Instruction& inst) {
-        uint64_t val1 = machine_state.get_register(inst.rs());
-        uint64_t val2 = machine_state.get_register(inst.rt());
-        uint64_t result = val1 * val2;
-        machine_state.set_lo(static_cast<uint32_t>(result & 0xFFFFFFFF));
-        machine_state.set_hi(static_cast<uint32_t>(result >> 32));
+    r_type_funct_map[0x19] = [this](const Instruction& inst) {    
+    uint64_t first_value  = static_cast<uint64_t>(machine_state.get_register(inst.rs()));
+    uint64_t second_value = static_cast<uint64_t>(machine_state.get_register(inst.rt()));
+    uint64_t result = first_value * second_value;
+    machine_state.set_lo(static_cast<uint32_t>(result));
+    machine_state.set_hi(static_cast<uint32_t>(result >> 32));
     };
 
     // div rs, rt
@@ -119,7 +130,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
             machine_state.set_lo(static_cast<uint32_t>(numerator / denominator));
             machine_state.set_hi(static_cast<uint32_t>(numerator % denominator));
         } else {
-            std::cerr << "ERROR: division by zero" << std::endl;
+            throw std::runtime_error("Error: division by zero");
         }
     };
 
@@ -132,7 +143,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
             machine_state.set_lo(numerator / denominator);
             machine_state.set_hi(numerator % denominator);
         } else {
-            std::cerr << "ERROR: division by zero" << std::endl;
+            throw std::runtime_error("Error: division by zero");
         }
     };
 
@@ -221,16 +232,18 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     // beq rs, rt, label
     opcode_map[0x04] = [this](const Instruction& inst) {
         if (machine_state.get_register(inst.rs()) == machine_state.get_register(inst.rt())) {
-            int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
+            uint32_t tmp = (static_cast<uint32_t>(static_cast<uint16_t>(inst.immediate())) << 2) & 0xFFFFu;
+            int32_t offset = static_cast<int16_t>(tmp);
+            machine_state.set_pc(machine_state.get_pc() + offset);
         }
     };
 
     // bne rs, rt, label
     opcode_map[0x05] = [this](const Instruction& inst) {
         if (machine_state.get_register(inst.rs()) != machine_state.get_register(inst.rt())) {
-            int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
+            uint32_t tmp = (static_cast<uint32_t>(static_cast<uint16_t>(inst.immediate())) << 2) & 0xFFFFu;
+            int32_t offset = static_cast<int16_t>(tmp);
+            machine_state.set_pc(machine_state.get_pc() + offset);
         }
     };
 
@@ -239,16 +252,18 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     // blez rs, label
     opcode_map[0x06] = [this](const Instruction& inst) {
         if (static_cast<int32_t>(machine_state.get_register(inst.rs())) <= 0) {
-            int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
+            uint32_t tmp = (static_cast<uint32_t>(static_cast<uint16_t>(inst.immediate())) << 2) & 0xFFFFu;
+            int32_t offset = static_cast<int16_t>(tmp);
+            machine_state.set_pc(machine_state.get_pc() + offset);
         }
     };
 
     // bgtz rs, label
     opcode_map[0x07] = [this](const Instruction& inst) {
         if (static_cast<int32_t>(machine_state.get_register(inst.rs())) > 0) {
-            int16_t offset = inst.immediate();
-            machine_state.set_pc(machine_state.get_pc() + (offset << 2));
+            uint32_t tmp = (static_cast<uint32_t>(static_cast<uint16_t>(inst.immediate())) << 2) & 0xFFFFu;
+            int32_t offset = static_cast<int16_t>(tmp);
+            machine_state.set_pc(machine_state.get_pc() + offset);
         }
     };
 
@@ -289,10 +304,9 @@ Interpreter::Interpreter(MachineState& machine_state_) :
     opcode_map[0x0B] = [this](const Instruction& inst) {
         uint8_t rs = inst.rs();
         uint8_t rt = inst.rt();
-        uint16_t immediate = inst.immediate();
-        uint32_t val1 = machine_state.get_register(rs);
-        uint32_t result = (val1 < static_cast<uint32_t>(immediate)) ? 1 : 0;
-        machine_state.set_register(rt, result);
+        uint32_t val = machine_state.get_register(rs);
+        uint32_t immediate = static_cast<uint32_t>(static_cast<int32_t>(static_cast<int16_t>(inst.immediate())));
+        machine_state.set_register(rt, (val < immediate) ? 1u : 0u);
     };
 
     // andi rt, rs, immediate
@@ -332,10 +346,10 @@ Interpreter::Interpreter(MachineState& machine_state_) :
         uint8_t  rt  = inst.rt();
         uint16_t imm = static_cast<uint16_t>(inst.immediate());
 
-        uint32_t old = machine_state.get_register(rt);
-        uint32_t res = (old & 0xFFFF0000u) | static_cast<uint32_t>(imm);
+        uint32_t original_rt = machine_state.get_register(rt);
+        uint32_t new_rt = (original_rt & 0xFFFF0000u) | static_cast<uint32_t>(imm);
 
-        machine_state.set_register(rt, res);
+        machine_state.set_register(rt, new_rt);
     };
 
     // lhi
@@ -343,10 +357,10 @@ Interpreter::Interpreter(MachineState& machine_state_) :
         uint8_t  rt  = inst.rt();
         uint16_t imm = static_cast<uint16_t>(inst.immediate());
 
-        uint32_t old = machine_state.get_register(rt);
-        uint32_t res = (old & 0x0000FFFFu) | (static_cast<uint32_t>(imm) << 16);
+        uint32_t original_rt = machine_state.get_register(rt);
+        uint32_t new_rt = (original_rt & 0x0000FFFFu) | (static_cast<uint32_t>(imm) << 16);
 
-        machine_state.set_register(rt, res);
+        machine_state.set_register(rt, new_rt);
     };
 
     // LOAD_STORE
@@ -398,35 +412,50 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
     // sh rt, offset(rs)
     opcode_map[0x29] = [this](const Instruction& inst) {
-        uint32_t address = machine_state.get_register(inst.rs()) + static_cast<int16_t>(inst.immediate());
-        uint16_t value = machine_state.get_register(inst.rt());
-        machine_state.write_half_word(address, value);
+        int32_t tmp = static_cast<int32_t>(machine_state.get_register(inst.rs())) + static_cast<int16_t>(inst.immediate());
+        uint32_t address = static_cast<uint32_t>(tmp);
+
+        if ((address % 2) != 0) {
+            throw std::runtime_error("Address alignment error for sh operation");
+        } else {
+            uint16_t value = static_cast<uint16_t>(machine_state.get_register(inst.rt()));
+            machine_state.write_half_word(address, value);
+        }
     };
 
     // sw rt, offset(rs)
     opcode_map[0x2B] = [this](const Instruction& inst) {
-        uint32_t address = machine_state.get_register(inst.rs()) + static_cast<int16_t>(inst.immediate());
-        uint32_t value = machine_state.get_register(inst.rt());
-        machine_state.write_word(address, value);
+        int32_t tmp = static_cast<int32_t>(machine_state.get_register(inst.rs())) + static_cast<int16_t>(inst.immediate());
+        uint32_t address = static_cast<uint32_t>(tmp);
+        
+        if ((address % 4) != 0) {
+            throw std::runtime_error("Address alignment error for sw operation");
+        } else {
+            uint32_t value = machine_state.get_register(inst.rt());
+            machine_state.write_word(address, value);
+        }
     };
 
     // JUMP
 
     // j target
     opcode_map[0x02] = [this](const Instruction& inst) {
-        uint32_t current_pc = machine_state.get_pc();
-        uint32_t target_word = inst.address();
-        uint32_t pc_top_bits = (current_pc + 4) & 0xF0000000;
-        machine_state.set_pc(pc_top_bits | (target_word << 2));
+        uint32_t target = inst.address() & 0x03FFFFFFu;
+        machine_state.set_pc(target);
     };
 
     // jal target
     opcode_map[0x03] = [this](const Instruction& inst) {
-        uint32_t current_pc = machine_state.get_pc();
-        machine_state.set_register(31, current_pc + 8); // Return to instruction after delay slot
-        uint32_t target_word = inst.address();
-        uint32_t pc_top_bits = (current_pc + 4) & 0xF0000000;
-        machine_state.set_pc(pc_top_bits | (target_word << 2));
+        uint32_t return_address = machine_state.get_pc();
+        machine_state.set_register(31, return_address);
+        uint32_t target = inst.address() & 0x03FFFFFFu;
+        machine_state.set_pc(target);
+    };
+
+    // la
+    opcode_map[0x0F] = [this](const Instruction& inst) {
+        uint32_t immediate = static_cast<uint16_t>(inst.immediate());
+        machine_state.set_register(inst.rt(), immediate);
     };
 
     opcode_map[0x1A] = [this](const Instruction& inst) {
@@ -467,10 +496,6 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
             // read int
             case 3: {
-                // std::cin >> input_value;
-                // machine_state.set_register(2, static_cast<uint32_t>(input_value));
-                // break;
-                
                 int32_t input_value;
 
                 if (std::cin >> input_value) {
@@ -485,10 +510,6 @@ Interpreter::Interpreter(MachineState& machine_state_) :
             // read char
             case 4: {
                 char input_char;
-                // std::cin >> input_char;
-                // machine_state.set_register(2, static_cast<uint32_t>(input_char));
-                // break;
-
                 if (std::cin >> input_char) {
                     machine_state.set_register(2, static_cast<uint32_t>(input_char));
                 } else {
@@ -566,22 +587,6 @@ void Interpreter::step() {
 }
 
 void Interpreter::run() {
-    // running = true;
-    // while (running) {
-    //     uint32_t pc = machine_state.get_pc();
-    //     uint32_t word;
-
-    //     try {
-    //         word = machine_state.read_word(pc);
-    //     } catch (const std::out_of_range&) {
-    //         std::cerr << "PC out of bounds at 0x" << std::hex << pc << std::dec << std::endl;
-    //         break;
-    //     }
-
-    //     Instruction inst(word);
-    //     machine_state.set_pc(pc + 4);
-    //     execute_instruction(inst);
-    // }
     start();
     while (running) {
         step();

@@ -29,7 +29,6 @@ private:
     QPushButton* step_button;
     QLabel* pc_label;
 
-    // void load_program();
     void update_ui();
 
     std::unique_ptr<MachineState> machine_state;

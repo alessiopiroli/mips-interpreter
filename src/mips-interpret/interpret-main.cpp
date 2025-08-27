@@ -41,6 +41,11 @@ int main(int argc, char* argv[]) {
 
                 MachineState state(1024 * 1024 * 4);
 
+                if (machine_code.size() > 4u * 1024u * 1024u) {
+                    std::cerr << "Error: exceeded available memory" << std::endl;
+                    return 1;
+                }
+
                 for (size_t i = 0; i < machine_code.size(); ++i) {
                     state.write_byte(i, machine_code[i]);
                 }

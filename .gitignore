@@ -4,3 +4,4 @@ create_bin.cpp
 print_number.bin
 /tests_asm
 /tests_bin
+/tests_complex_asm

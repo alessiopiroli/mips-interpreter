@@ -23,8 +23,8 @@ int main(int argc, char* argv[]) {
     std::streamsize size = bin_file.tellg();
     bin_file.seekg(0, std::ios::beg);
 
-    std::vector<char> buffer(size);
-    if (!bin_file.read(buffer.data(), size)) {
+    std::vector<uint8_t> buffer(size);
+    if (!bin_file.read(reinterpret_cast<char*>(buffer.data()), size)) {
         std::cerr << "Error: Could not read from file " << argv[1] << std::endl;
         return 1;
     }

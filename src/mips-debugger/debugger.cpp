@@ -95,7 +95,6 @@ DebuggerWindow::DebuggerWindow(const QString& assembly_file, QWidget* parent) : 
 }
 
 void DebuggerWindow::load_and_assemble_file(const QString& filepath) {
-    // 1. Read the .asm file to display its text content in the GUI
     QFile file(filepath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         QMessageBox::critical(this, "Error", "Could not open file: " + filepath);
@@ -105,7 +104,6 @@ void DebuggerWindow::load_and_assemble_file(const QString& filepath) {
     assembly_view->setText(in.readAll());
     file.close();
 
-    // 2. Assemble the file using your Assembler class
     std::ifstream input_file_stream(filepath.toStdString());
     Assembler assembler;
     std::stringstream binary_stream;
@@ -117,7 +115,6 @@ void DebuggerWindow::load_and_assemble_file(const QString& filepath) {
         return;
     }
 
-    // 3. Load the resulting machine code into the machine's memory
     std::string binary_string = binary_stream.str();
     std::vector<uint8_t> machine_code(binary_string.begin(), binary_string.end());
 
@@ -125,7 +122,6 @@ void DebuggerWindow::load_and_assemble_file(const QString& filepath) {
         machine_state->write_byte(i, machine_code[i]);
     }
 
-    // 4. Find the 'main' label from the symbol table and set the PC
     const auto& symbol_table = assembler.get_symbol_table();
     if (!symbol_table.count("main")) {
         QMessageBox::critical(this, "Error", "'main' label not found in assembly file.");

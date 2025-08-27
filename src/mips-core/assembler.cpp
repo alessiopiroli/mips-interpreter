@@ -42,70 +42,81 @@ Assembler::Assembler() {
     register_map["$ra"] = 31;
 
     // populating the instruction table
-    instruction_table.emplace("sll", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x00});
-    instruction_table.emplace("srl", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x02});
-    instruction_table.emplace("sra", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x03});
-    instruction_table.emplace("sllv", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x04});
-    instruction_table.emplace("srlv", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x06});
-    instruction_table.emplace("srav", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x07});
-    instruction_table.emplace("jr", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x08});
-    instruction_table.emplace("jalr", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x09});
-    instruction_table.emplace("mfhi", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x10});
-    instruction_table.emplace("mthi", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x11});
-    instruction_table.emplace("mflo", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x12});
-    instruction_table.emplace("mtlo", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x13});
-    instruction_table.emplace("mult", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x18});
-    instruction_table.emplace("multu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x19});
-    instruction_table.emplace("div", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x1A});
-    instruction_table.emplace("divu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x1B});
-    instruction_table.emplace("add", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x20});
-    instruction_table.emplace("addu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x21});
-    instruction_table.emplace("sub", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x22});
-    instruction_table.emplace("subu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x23});
-    instruction_table.emplace("and", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x24});
-    instruction_table.emplace("or", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x25});
-    instruction_table.emplace("xor", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x26});
-    instruction_table.emplace("nor", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x27});
-    instruction_table.emplace("slt", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x2A});
-    instruction_table.emplace("sltu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x2B});
+    instruction_table.emplace("sll", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x00}); // OK
+    instruction_table.emplace("srl", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x02}); // OK
+    instruction_table.emplace("sra", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x03}); // OK
+    instruction_table.emplace("sllv", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x04}); // OK
+    instruction_table.emplace("srlv", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x06}); // OK
+    instruction_table.emplace("srav", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x07}); // OK
+    instruction_table.emplace("jr", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x08}); // OK
+    instruction_table.emplace("jalr", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x09}); // OK
+    instruction_table.emplace("mfhi", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x10}); // OK
+    instruction_table.emplace("mthi", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x11}); // OK
+    instruction_table.emplace("mflo", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x12}); // OK
+    instruction_table.emplace("mtlo", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x13}); // OK
+    instruction_table.emplace("mult", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x18}); // OK
+    instruction_table.emplace("multu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x19}); // OK
+    instruction_table.emplace("div", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x1A}); // OK
+    instruction_table.emplace("divu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x1B}); // OK
+    instruction_table.emplace("add", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x20}); // OK
+    instruction_table.emplace("addu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x21}); // OK
+    instruction_table.emplace("sub", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x22}); // OK
+    instruction_table.emplace("subu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x23}); // OK
+    instruction_table.emplace("and", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x24}); // OK
+    instruction_table.emplace("or", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x25}); // OK
+    instruction_table.emplace("xor", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x26}); // OK
+    instruction_table.emplace("nor", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x27}); // OK
+    instruction_table.emplace("slt", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x2A}); // OK
+    instruction_table.emplace("sltu", InstructionInfo{InstructionType::R_TYPE, 0x00, 0x2B}); // OK
 
-    instruction_table.emplace("beq", InstructionInfo{InstructionType::I_TYPE, 0x04});
-    instruction_table.emplace("bne", InstructionInfo{InstructionType::I_TYPE, 0x05});
-    instruction_table.emplace("blez", InstructionInfo{InstructionType::I_TYPE, 0x06});
-    instruction_table.emplace("bgtz", InstructionInfo{InstructionType::I_TYPE, 0x07});
-    instruction_table.emplace("addi", InstructionInfo{InstructionType::I_TYPE, 0x08});
-    instruction_table.emplace("addiu", InstructionInfo{InstructionType::I_TYPE, 0x09});
-    instruction_table.emplace("slti", InstructionInfo{InstructionType::I_TYPE, 0x0A});
-    instruction_table.emplace("sltiu", InstructionInfo{InstructionType::I_TYPE, 0x0B});
-    instruction_table.emplace("andi", InstructionInfo{InstructionType::I_TYPE, 0x0C});
-    instruction_table.emplace("ori", InstructionInfo{InstructionType::I_TYPE, 0x0D});
-    instruction_table.emplace("xori", InstructionInfo{InstructionType::I_TYPE, 0x0E});
-    instruction_table.emplace("llo", InstructionInfo{InstructionType::I_TYPE, 0x18});
-    instruction_table.emplace("lhi", InstructionInfo{InstructionType::I_TYPE, 0x19});
-    instruction_table.emplace("lb", InstructionInfo{InstructionType::I_TYPE, 0x20});
-    instruction_table.emplace("lh", InstructionInfo{InstructionType::I_TYPE, 0x21});
-    instruction_table.emplace("lw", InstructionInfo{InstructionType::I_TYPE, 0x23});
-    instruction_table.emplace("lbu", InstructionInfo{InstructionType::I_TYPE, 0x24});
-    instruction_table.emplace("lhu", InstructionInfo{InstructionType::I_TYPE, 0x25});
-    instruction_table.emplace("sb", InstructionInfo{InstructionType::I_TYPE, 0x28});
-    instruction_table.emplace("sh", InstructionInfo{InstructionType::I_TYPE, 0x29});
-    instruction_table.emplace("sw", InstructionInfo{InstructionType::I_TYPE, 0x2B});
+    instruction_table.emplace("beq", InstructionInfo{InstructionType::I_TYPE, 0x04}); // OK
+    instruction_table.emplace("bne", InstructionInfo{InstructionType::I_TYPE, 0x05}); // OK
+    instruction_table.emplace("blez", InstructionInfo{InstructionType::I_TYPE, 0x06}); // OK
+    instruction_table.emplace("bgtz", InstructionInfo{InstructionType::I_TYPE, 0x07}); // OK
+    instruction_table.emplace("addi", InstructionInfo{InstructionType::I_TYPE, 0x08}); // OK
+    instruction_table.emplace("addiu", InstructionInfo{InstructionType::I_TYPE, 0x09}); // OK
+    instruction_table.emplace("slti", InstructionInfo{InstructionType::I_TYPE, 0x0A}); // OK
+    instruction_table.emplace("sltiu", InstructionInfo{InstructionType::I_TYPE, 0x0B}); // OK
+    instruction_table.emplace("andi", InstructionInfo{InstructionType::I_TYPE, 0x0C}); // OK
+    instruction_table.emplace("ori", InstructionInfo{InstructionType::I_TYPE, 0x0D}); // OK
+    instruction_table.emplace("xori", InstructionInfo{InstructionType::I_TYPE, 0x0E}); // OK
+    instruction_table.emplace("llo", InstructionInfo{InstructionType::I_TYPE, 0x18}); // OK
+    instruction_table.emplace("lhi", InstructionInfo{InstructionType::I_TYPE, 0x19}); // OK
+    instruction_table.emplace("lb", InstructionInfo{InstructionType::I_TYPE, 0x20}); // OK
+    instruction_table.emplace("lh", InstructionInfo{InstructionType::I_TYPE, 0x21}); // OK
+    instruction_table.emplace("lw", InstructionInfo{InstructionType::I_TYPE, 0x23}); // OK
+    instruction_table.emplace("lbu", InstructionInfo{InstructionType::I_TYPE, 0x24}); // OK
+    instruction_table.emplace("lhu", InstructionInfo{InstructionType::I_TYPE, 0x25}); // OK
+    instruction_table.emplace("sb", InstructionInfo{InstructionType::I_TYPE, 0x28}); // OK
+    instruction_table.emplace("sh", InstructionInfo{InstructionType::I_TYPE, 0x29}); // OK
+    instruction_table.emplace("sw", InstructionInfo{InstructionType::I_TYPE, 0x2B}); // OK
 
-    instruction_table.emplace("j", InstructionInfo{InstructionType::J_TYPE, 0x02});
-    instruction_table.emplace("jal", InstructionInfo{InstructionType::J_TYPE, 0x03});
+    instruction_table.emplace("j", InstructionInfo{InstructionType::J_TYPE, 0x02}); // OK
+    instruction_table.emplace("jal", InstructionInfo{InstructionType::J_TYPE, 0x03}); // OK
 
-    instruction_table.emplace("syscall", InstructionInfo{InstructionType::TRAP_TYPE, 0x1A});
+    instruction_table.emplace("trap", InstructionInfo{InstructionType::TRAP_TYPE, 0x1A}); // OK
+
+    instruction_table.emplace("la", InstructionInfo{InstructionType::I_TYPE, 0x0F});
+
+    // populating the syscall map
+    syscall_map["print_int"] = 0;
+    syscall_map["print_character"] = 1;
+    syscall_map["print_string"] = 2;
+    syscall_map["read_int"] = 3;
+    syscall_map["read_character"] = 4;
+    syscall_map["exit"] = 5;
+    
 }
 
 std::string trim(const std::string& str) {
-    const std::string whitespace = " \t";
-    const auto string_start = str.find_first_not_of(whitespace);
+    const std::string tab_or_space = " \t";
+    const auto string_start = str.find_first_not_of(tab_or_space);
     
     if (string_start == std::string::npos) {
         return "";
     }
 
-    const auto string_end = str.find_last_not_of(whitespace);
+    const auto string_end = str.find_last_not_of(tab_or_space);
     const auto string_range = string_end - string_start + 1;
     
     return str.substr(string_start, string_range);
@@ -123,7 +134,7 @@ void Assembler::pass1(std::istream& input) {
             continue;
         }
 
-        if (line == ".data") {
+        if (line == ".data") { // might need to change it to data:
             in_data = true;
             
             // aligning address to next 4 multiple
@@ -172,22 +183,29 @@ void Assembler::pass1(std::istream& input) {
                 // we handle data directives
                 if (first_token == ".word") {
                     std::string value;
-
                     while (ss >> value) {
                         current_address += 4;
                     }
-
                 } else if (first_token == ".byte") {
                     std::string value;
-
                     while (ss >> value) {
                         current_address += 1;
                     }
-
                 } else if (first_token == ".space") {
                     uint32_t space_size = 0;
                     ss >> space_size;
                     current_address += space_size;
+                } else if (first_token == ".asciiz") {
+                    auto first_quote = line.find('"');
+                    auto last_quote = line.find_last_of('"');
+
+                    if ((first_quote != std::string::npos) && (last_quote != std::string::npos) && (first_quote < last_quote)) {
+                        std::string string_content = line.substr(first_quote + 1, last_quote - first_quote - 1);
+                        uint32_t string_length = string_content.length();
+                        current_address += string_length + 1;
+                    } else {
+                        std::cerr << "Malformed string in line " << line << std::endl; 
+                    }
                 }
             } else {
                 // since all instructions are four bytes that's what we skip
@@ -270,16 +288,13 @@ uint32_t Assembler::encode_r_type(const InstructionInfo& info, const std::vector
 
         // jalr (rd, rs or just rs)
         case (0x09): {
-            if (operands.size() == 1) {
+            if (operands.size() != 1) {
+                throw std::runtime_error("jalr expects exactly one register operand");
+            } else {
                 rs = parse_register(operands[0]);
                 rd = 31;
-            } else if (operands.size() == 2) {
-                rd = parse_register(operands[0]);
-                rs = parse_register(operands[1]);
-            } else {
-                throw std::runtime_error("jalr expects 1 or 2 operands");
+                break;
             }
-            break;
         }
 
         // mfhi, mflo
@@ -442,6 +457,27 @@ uint32_t Assembler::encode_i_type(const InstructionInfo& info, const std::vector
             }
         }
 
+        // la
+        case (0x0F): {
+            if (operands.size() != 2) {
+                throw std::runtime_error("la instruction expects 2 operands");
+            } else {
+                rt = parse_register(operands[0]);
+                std::string label = trim(operands[1]);
+                if (!symbol_table.count(label)) {
+                    throw std::runtime_error("unknown label for la instruction: " + label);
+                } else {
+                    uint32_t address = symbol_table.at(label);
+                    if (address > 0xFFFFu) {
+                        throw std::runtime_error("label address exceeds 16 bits range");
+                    } else {
+                        immediate = static_cast<int16_t>(static_cast<uint16_t>(address));
+                        break;
+                    }
+                }
+            }
+        }
+
         default: {
             throw std::runtime_error("Unkown opcode for I-type");
         }
@@ -461,8 +497,7 @@ uint32_t Assembler::encode_j_type(const InstructionInfo& info, const std::vector
             throw std::runtime_error(label + " not found");
         } else {
             uint32_t target_address = symbol_table.at(label);
-            uint32_t pseudo_address = target_address >> 2;
-            return ((opcode << 26) | (pseudo_address));
+            return ((opcode << 26) | (target_address));
         }
     }
 }
@@ -473,8 +508,14 @@ uint32_t Assembler::encode_trap_type(const InstructionInfo& info, const std::vec
     if (operands.size() != 1) {
         throw std::runtime_error("Syscall requires exactly one immediate operand");
     } else {
-        uint16_t code = std::stoi(operands[0]);
-        return ((opcode << 26) | (code & 0xFFFF));
+        std::string syscall_name = trim(operands[0]);
+
+        if (!syscall_map.count(syscall_name)) {
+            throw std::runtime_error("Unknown syscall name");
+        } else {
+            uint16_t code = syscall_map.at(syscall_name);
+            return ((opcode << 26) | (code & 0xFFFF));
+        }
     }
 }
 
@@ -553,6 +594,21 @@ void Assembler::pass2(std::istream& input) {
                 }
 
                 current_address += size;
+            } else if (operation == ".asciiz") {
+                auto first_quote = line.find('"');
+                auto last_quote = line.find_last_of('"');
+
+                if ((first_quote != std::string::npos) && (last_quote != std::string::npos) && (first_quote < last_quote)) {
+                    std::string string_content = line.substr(first_quote + 1, last_quote - first_quote - 1);
+                    for (char c : string_content) {
+                        binary_output.push_back(static_cast<uint8_t>(c));
+                    }
+
+                    binary_output.push_back(0);
+                    current_address += string_content.length() + 1;
+                } else {
+                    std::cerr << "Error: malformed string in line " << line_num << std::endl; 
+                }
             }
         } else {
             if (!(instruction_table.count(operation))) {
