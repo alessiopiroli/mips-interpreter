@@ -465,7 +465,7 @@ Interpreter::Interpreter(MachineState& machine_state_) :
             // print integer
             // integer is in a0 (4)
             case 0: {
-                std::cout << static_cast<int32_t>(machine_state.get_register(4));
+                std::cout << static_cast<uint32_t>(machine_state.get_register(4)) << "\n";
                 break;
             }
 
