@@ -9,7 +9,7 @@
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        std::cerr << "Correct format is mips-interpret <filename.asm>" << std::endl;
+        std::cerr << "Correct format is mips-interpret <filename.bin>" << std::endl;
         return 1;
     } else {
         std::ifstream input_file(argv[1]);

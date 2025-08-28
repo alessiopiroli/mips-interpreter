@@ -173,7 +173,6 @@ void Assembler::pass1(std::istream& input) {
             line = trim(line.substr(colon_position + 1));
         }
 
-        // if there's something else in the line then it is an instruction or a data directive
         if (!line.empty()) {
             std::stringstream ss(line);
             std::string first_token;
@@ -208,7 +207,6 @@ void Assembler::pass1(std::istream& input) {
                     }
                 }
             } else {
-                // since all instructions are four bytes that's what we skip
                 current_address += 4;
             }
         }
