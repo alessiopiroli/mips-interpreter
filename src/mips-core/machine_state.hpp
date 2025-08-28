@@ -40,10 +40,10 @@ public:
     void set_register(uint8_t index, uint32_t value); // function to set register
 
     uint32_t read_word(uint32_t address) const;
-    uint32_t read_half_word_signed(uint32_t address) const;
-    uint32_t read_half_word_unsigned(uint32_t address) const;
-    uint32_t read_byte_signed(uint32_t address) const;
-    uint32_t read_byte_unsigned(uint32_t address) const;
+    int16_t read_half_word_signed(uint32_t address) const;
+    uint16_t read_half_word_unsigned(uint32_t address) const;
+    int8_t read_byte_signed(uint32_t address) const;
+    uint8_t read_byte_unsigned(uint32_t address) const;
 
     void write_word(uint32_t address, uint32_t value);
     void write_half_word(uint32_t address, uint16_t value);
