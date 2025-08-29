@@ -8,3 +8,6 @@ add_compile_options(-Wall -Wextra)
 
 add_subdirectory(src)
 add_subdirectory(src/mips-debugger)
+add_subdirectory(tests)
+
+enable_testing()
