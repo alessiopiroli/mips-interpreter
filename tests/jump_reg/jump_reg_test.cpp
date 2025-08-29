@@ -38,24 +38,3 @@ TEST_F(Jump, JTest) {
     ASSERT_EQ(machine->get_pc(), expected_target_address);
     ASSERT_EQ(machine->get_register(31), 0);
 }
-
-TEST_F(Jump, JalTest) {
-    uint32_t initial_pc = 0;
-    machine->set_pc(initial_pc);
-
-    uint32_t expected_target_address = 0x400;
-    // uint32_t word_target_address = expected_target_address / 4;
-
-    // opcode = 000011
-    // 0x400/4 = 0x100 = 000100000000
-    // 000011 00000000000000 000100000000
-    // 0000'1100'0000'0000'0000'0001'0000'0000
-    // 0x0C000100
-
-    Instruction instruction(0x0C000100);
-    machine->set_pc(initial_pc + 4);
-    interpreter->execute_instruction(instruction);
-
-    ASSERT_EQ(machine->get_pc(), expected_target_address);
-    ASSERT_EQ(machine->get_register(31), initial_pc + 4);
-}

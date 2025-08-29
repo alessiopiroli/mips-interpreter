@@ -440,15 +440,18 @@ Interpreter::Interpreter(MachineState& machine_state_) :
 
     // j target
     opcode_map[0x02] = [this](const Instruction& inst) {
-        uint32_t target = inst.address() & 0x03FFFFFFu;
+        uint32_t pc = machine_state.get_pc();
+        uint32_t index = (inst.address() & 0x03FFFFFFu);
+        uint32_t target = ((pc & 0xF0000000u) | (index << 2));
         machine_state.set_pc(target);
     };
 
     // jal target
     opcode_map[0x03] = [this](const Instruction& inst) {
-        uint32_t return_address = machine_state.get_pc();
-        machine_state.set_register(31, return_address);
-        uint32_t target = inst.address() & 0x03FFFFFFu;
+        uint32_t pc = machine_state.get_pc();
+        machine_state.set_register(31, pc);
+        uint32_t index =(inst.address() & 0x03FFFFFFu);
+        uint32_t target = ((pc & 0xF0000000u) | (index << 2));
         machine_state.set_pc(target);
     };
 

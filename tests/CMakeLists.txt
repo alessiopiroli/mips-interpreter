@@ -16,6 +16,7 @@ add_executable(run_tests
     branch_zero/branch_zero_test.cpp
     div_mult/div_mult_test.cpp
     jump/jump_test.cpp
+    jump_reg/jump_reg_test.cpp
 )
 target_link_libraries(run_tests
     PRIVATE
