@@ -17,6 +17,12 @@ add_executable(run_tests
     div_mult/div_mult_test.cpp
     jump/jump_test.cpp
     jump_reg/jump_reg_test.cpp
+    load_imm/load_imm_test.cpp
+    load_store/load_store_test.cpp
+    move_from/move_from_test.cpp
+    move_to/move_to_test.cpp
+    shift/shift_test.cpp
+    shift_reg/shift_reg_test.cpp
 )
 target_link_libraries(run_tests
     PRIVATE

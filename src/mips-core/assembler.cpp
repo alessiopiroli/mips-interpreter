@@ -495,7 +495,8 @@ uint32_t Assembler::encode_j_type(const InstructionInfo& info, const std::vector
             throw std::runtime_error(label + " not found");
         } else {
             uint32_t target_address = symbol_table.at(label);
-            return ((opcode << 26) | (target_address));
+            uint32_t index = ((target_address >> 2) & (0x03FFFFFFu));
+            return (((static_cast<uint32_t>(opcode)) << 26) | index);
         }
     }
 }
