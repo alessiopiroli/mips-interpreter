@@ -24,7 +24,6 @@ TEST_F(TestArithLogicImm, AddImmediatePositive) {
 
     // addi $t0, $zero, 10
     // opcode = 001000
-    // DA QUI IN POI
     // rs = $zero = reg. 0 = 00000
     // rd = $t0 = reg. 8 = 01000
     // immediate = 10 = 0000'0000'0000'1010

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.14)
-project(mips-interpreter-tests)
+project(mips-assembler-tests)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -8,10 +8,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(googletest)
 
-add_executable(run_tests
-    tests-main.cpp
-    arith_logic/test_arith_logic.cpp
-    arith_logic_imm/test_arith_logic_imm.cpp
+add_executable(run_assembler_tests
+    assembler-test.cpp
+    arith_logic/arith_logic_test.cpp
+    arith_logic_imm/arith_logic_imm_test.cpp
     branch/branch_test.cpp
     branch_zero/branch_zero_test.cpp
     div_mult/div_mult_test.cpp
@@ -23,12 +23,13 @@ add_executable(run_tests
     move_to/move_to_test.cpp
     shift/shift_test.cpp
     shift_reg/shift_reg_test.cpp
+    trap/trap_test.cpp
 )
-target_link_libraries(run_tests
+target_link_libraries(run_assembler_tests
     PRIVATE
     mips-core
     GTest::gtest_main
 )
 
 include(GoogleTest)
-gtest_discover_tests(run_tests)
+gtest_discover_tests(run_assembler_tests)

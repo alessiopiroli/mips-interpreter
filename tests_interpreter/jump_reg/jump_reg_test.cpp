@@ -53,15 +53,18 @@ TEST_F(JumpReg, JalrTest) {
     // opcode = 000000
     // funct = 001001
     // rs = $t0 = reg. 8 = 01000
-    // rd = rt = 0
+    // rd = $ra = reg. 31 = 11111
+    // rt = 00000
+    // shamt = 00000
     // Instruction:
-    // 000000'01000'00000'00000'00000'001001
-    // 0000'0001'0000'0000'0000'0000'0000'1001
-    // 0x01000009
+    // 000000'01000'11111'00000'00000'001001
+    // 0000'0001'0001'1111'0000'0000'0000'1001
+    // 0x011F0009
 
-    Instruction instruction(0x01000009);
+    Instruction instruction(0x011F0009);
+    machine->set_pc(initial_pc + 4);
     interpreter->execute_instruction(instruction);
 
     ASSERT_EQ(machine->get_pc(), target_address);
-    ASSERT_EQ(machine->get_register(31), initial_pc);
+    ASSERT_EQ(machine->get_register(31), initial_pc + 4);
 }
