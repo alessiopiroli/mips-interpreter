@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     
-    std::cout << "\nExecution finished successfully." << std::endl;
+    // std::cout << "\nExecution finished successfully." << std::endl;
     return 0;
 }
 

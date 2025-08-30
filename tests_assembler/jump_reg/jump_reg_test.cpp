@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 #include "assembler.hpp"
 
-class JumpTestReg : public ::testing::Test {
+class JumpRegTest : public ::testing::Test {
 protected:
     Assembler assembler;
 };
 
-TEST_F(JumpTestReg, JalrTest) {
+TEST_F(JumpRegTest, JalrTest) {
     std::string assembly_code = "jalr $t0";
     std::stringstream code_stream(assembly_code);
     std::stringstream binary_output;

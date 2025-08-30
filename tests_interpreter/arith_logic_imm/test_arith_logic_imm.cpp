@@ -42,10 +42,9 @@ TEST_F(TestArithLogicImm, AddImmediateNegative) {
 
     // addi $t0, $zero, -10
     // opcode = 001000
-    // DA QUI IN POI
     // rs = $zero = reg. 0 = 00000
     // rd = $t0 = reg. 8 = 01000
-    // immediate = 10 = 1111'1111'1111'0110
+    // immediate = -10 = 1111'1111'1111'0110
     // INSTRUCTION:
     // 001000'00000'01000'1111111111110110
     // 0010'0000'0000'1000'1111'1111'1111'0110
@@ -61,7 +60,6 @@ TEST_F(TestArithLogicImm, AddImmediateZero) {
 
     // addi $t0, $zero, 0
     // opcode = 001000
-    // DA QUI IN POI
     // rs = $zero = reg. 0 = 00000
     // rd = $t0 = reg. 8 = 01000
     // immediate = 0 = 0000'0000'0000'0000

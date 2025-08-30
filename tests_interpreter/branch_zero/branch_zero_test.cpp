@@ -22,7 +22,7 @@ protected:
 TEST_F(TestBranchZero, BranchZeroPosOffsetZeroVal) {
     uint32_t initial_pc = 0;
     machine->set_pc(initial_pc);
-    machine->set_register(0x08, 0); // $t0 = 10
+    machine->set_register(0x08, 0);
     // machine->set_register(0x09, 10); // $t1 = 10
 
     // we want to jump forwards 5 instructions
