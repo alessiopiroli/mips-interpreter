@@ -45,5 +45,5 @@ make
 ### Debugger
 On the left side of the window the assembly input file is shown. On the right side a view of the state of the PC register and the  general purpose registers is shown. A toggle can be pressed to view the values stored in decimal. At the bottom there is a bar where one of the following commands can be used:
 - `reg <register_name>` to display the value of the register
-- `mem<8/16/32> <address>` to display the value stored in a certain address.
+- `mem<8/16/32> <address>` to display the bytes, half-words or words stored at memory addresses.
 <img width="1197" height="832" alt="image" src="https://github.com/user-attachments/assets/4cc199d4-e77b-49e1-8136-3cbd0cb2d540" />
