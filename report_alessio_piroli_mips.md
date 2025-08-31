@@ -11,14 +11,14 @@ The `MachineState` class is the interface between the `Assembler`, `Interpreter`
 
 The `Assembler` class contains several `std::unordered_map<std::string, ...>` structures that map register name to identifiers, instructions mnemonics to their encoding and system calls to their corresponding codes.
 The `pass1` function scans the assembly code to record addresses relative to labels and stores them in the `symbol_table`. It uses helper functions like `trim()` which remove leading and trailing white spaces.
-The `pass2()` function is responsible of encode the instructions in to their machine-level representation.
+The `pass2()` function is responsible of encoding instructions to their machine-level representation.
 This is achieved through helper functions like `encode_r_type()`, `encode_j_type()`, `encode_i_type()`, `encode_trap_type()`. They rely on data stored in `InstructionInfo` and the `symbol_table` to encode each operation in the correct binary format.
 <br>
 
 The `Interpreter` class defines two maps which are populated by its constructor: `r_type_funct_map` and `opcode_map`.  
 The first associates function codes of `R-TYPE` instructions to `lambda`s that implement the execution semantics. 
 Similarly, the second map links opcodes and `lambda`s for the remaining instructions.
-The class implements a `step()` function which permits the execution of one operation stored in memory at a time. 
+The class implements a `step()` function which permits the execution of one instruction stored in memory at a time. 
 This member function proved particularly useful during the implementation of the debugger and the testing phrase.
 A `run()` method is also implemented which simulates real execution.
 <br>
